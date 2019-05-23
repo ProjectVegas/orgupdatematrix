@@ -52,7 +52,7 @@ Add the following task to your Capistrano config eg. `deploy/config.rb`:
         info 'Updating deploy matrix!'
         commit = capture(:git, 'rev-list', '-n', '1', fetch(:branch)).chomp
         updater = OrgUpdateMatrix::Updater.new('GitHubUser/RepoName', 'file-path.yml', ENV['GITHUB_API_TOKEN'])
-        updater.update(fetch(:application), fetch(:stage), fetch(:branch), commit, fetch(:app_url), fetch(:repo_url), optional_extras)
+        updater.update(fetch(:application), fetch(:stage), fetch(:branch), commit, fetch(:app_url), fetch(:repo_url), fetch(:extra_env))
       end
     end
   end
