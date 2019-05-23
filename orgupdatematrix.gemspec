@@ -10,14 +10,14 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{"Updates a YAML file with Capistrano deploy data"}
   spec.description   = %q{}
-  spec.homepage      = "https://github.com/luntzel/orgupdatematrix"
+  spec.homepage      = "https://github.com/ProjectVegas/orgupdatematrix"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
     spec.metadata["allowed_push_host"] = "https://rubygems.org"
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/luntzel/orgupdatematrix"
+    spec.metadata["source_code_uri"] = "https://github.com/ProjectVegas/orgupdatematrix"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
