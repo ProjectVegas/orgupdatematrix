@@ -46,10 +46,10 @@ module OrgUpdateMatrix
       log("app: #{app}", 9)
       log("stage: #{stage}", 9)
       state.each { |key, value| log("#{key}: #{value}", 9) }
+      message = "update deploy matrix: #{app}:#{stage}"
 
       Octopoller.poll(wait: :exponentially, retries: 6) do
         begin
-          message = "update deploy matrix: #{app}:#{stage}"
           file = get_file_contents
           data = update_yaml(file, app, stage, state)
           result = @client.update_contents(@repo, @file_path, message, file[:sha], data.to_yaml)
