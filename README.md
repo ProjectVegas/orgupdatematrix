@@ -32,6 +32,12 @@ Add an `:app_url` variable to each deploy env file such as `deploy/environments/
   set :app_url, 'https://staging.my-application.com'
 ```
 
+Add the `matrix` role to the servers you want to report from:
+
+```
+  server 'staging.my-application.com', user: 'deploy', roles: %w{web matrix}
+```
+
 Auth: generate a GitHub [personal access token](https://github.com/settings/tokens) and supply it at deploy time:
 
 ```
@@ -47,7 +53,7 @@ Add the following task to your Capistrano config eg. `deploy/config.rb`:
       'my_var1' => 'value1',
       'my_var2' => 'value2'
     }
-    on roles(:web) do
+    on roles(:matrix) do
       within repo_path do
         info 'Updating deploy matrix!'
         commit = capture(:git, 'rev-list', '-n', '1', fetch(:branch)).chomp
@@ -70,7 +76,7 @@ app_name:
     commit: 6209dc2138df2ecb808559d8f1c5bc41bfd17d0d
     updated: 2019-05-09 03:51:50 UTC
     app_url: https://staging.my-application.com
-    github_url: https///github.com/MyUser/AppRepo.git
+    github_url: https://github.com/MyUser/AppRepo.git
     extras:
       my_var1: value1
       my_var2: value2
