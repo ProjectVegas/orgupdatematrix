@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+set -o pipefail
+
+if ! command -v gitleaks &> /dev/null; then
+  echo "ERROR: gitleaks not installed!"
+  echo "On MacOS run: brew install gitleaks"
+  echo "On other platforms see: https://github.com/zricethezav/gitleaks"
+  exit 1
+fi
+
+if [ $SKIP_GITLEAKS ]; then
+  echo '** Skipping gitleaks **'
+  exit 0
+fi
+
+if [ -f $(git rev-parse --show-toplevel)/.gitleaks.toml ]; then
+  gitleaks -v --redact --append-repo-config --repo-config-path=.gitleaks.toml
+else
+  gitleaks -v --redact
+fi

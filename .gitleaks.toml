@@ -1,0 +1,85 @@
+# This is a repo config file for gitleaks which is used in addition to the default config:
+# https://github.com/zricethezav/gitleaks/blob/master/config/default.go
+# Gitleaks does not whitelist anything by default.
+# - https://www.ndss-symposium.org/wp-content/uploads/2019/02/ndss2019_04B-3_Meli_paper.pdf
+# - https://github.com/dxa4481/truffleHogRegexes/blob/master/truffleHogRegexes/regexes.json
+
+title = "gitleaks additional config"
+
+[[rules]]
+description = "Basic Authentication"
+regex = '''\/\/[^:\/?#[\]@!$&%<>{}\\'()*+,;=\s]+:([^:\/?#[\]@!$&%<>{}\\'()*+,;=\s]+)@'''
+tags = ["key", "basic", "auth"]
+  [rules.allowlist]
+    description = "Exclude test DSN string"
+    regexes = [
+      '''//user(name)?:password@''',
+      '''//postgres(_user)?(?i):postgres(_password)?(?i)@'''
+    ]
+
+[[rules]]
+description = "Github"
+regex = '''(?i)github(.{0,20})?(?-i)['\"][0-9a-zA-Z]{35,40}['\"]'''
+tags = ["key", "Github"]
+
+[[rules]]
+description = "Generic API key"
+regex = '''(?i)(api_key|apikey)(.{0,20})?['|"][0-9a-zA-Z]{32,45}['|"]'''
+tags = ["key", "API", "generic"]
+
+[[rules]]
+description = "Generic Secret, Password or Token"
+regex = '''(?i)(password|secret|token)+(.{0,20})?['|"][0-9a-zA-Z]{32,80}['|"]'''
+tags = ["key", "Secret", "generic"]
+  [rules.allowlist]
+    description = "Test AES256 encryption key used in AppFactory tests"
+    regexes = [
+      '''6368616e676520746869732070617373776f726420746f206120736563726575'''
+    ]
+
+[[rules]]
+description = "Google Cloud Platform API key"
+regex = '''(?i)(google|gcp|youtube|drive|yt)(.{0,20})?['\"][AIza[0-9a-z\\-_]{35}]['\"]'''
+tags = ["key", "Google", "GCP"]
+
+[[rules]]
+description = "Google OAuth"
+regex = '''(?i)(google|gcp|auth)(.{0,20})?['"][0-9]+-[0-9a-z_]{32}\.apps\.googleusercontent\.com['"]'''
+tags = ["key", "Google", "OAuth"]
+
+[[rules]]
+description = "Google OAuth access token"
+regex = '''ya29\.[0-9A-Za-z\-_]+'''
+tags = ["key", "Google", "OAuth"]
+
+[[rules]]
+description = "JSON Web Token"
+regex = '''eyJ[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*?'''
+tags = ["key", "jwt"]
+  [rules.allowlist]
+    description = "Test JWT token in Plotly Dash sample app 'Oil and gas' https://github.com/plotly/dash-oil-and-gas-demo/blob/master/app.py#L48"
+    regexes = [
+      '''eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0\.fk8k06T96Ml9CLGgKmk81w''',
+      '''eyJraWQiOiJzRzVha014X1dEUm9FS2k4Wlh2T2tUTmdRNDhwWlIzak9XNjRLMGxicDVzIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULmJmU2pFS1QxdWxnWElVMzJoRklYd2s4NlBIQXlWeVA4a3h2UC10SXdEc2MiLCJpc3MiOiJodHRwczovL21ja2lkZGV2Lm9rdGFwcmV2aWV3LmNvbS9vYXV0aDIvYXVzbHYzczlwekpvQXl1aWMwaDciLCJhdWQiOiJodHRwczovL3V0eC5tdnAwMS5kZXYubnZ0Lm1ja2luc2V5LmNsb3VkL3V0aWxpdHl4L1RuRC8iLCJpYXQiOjE1OTAwNTc4MjksImV4cCI6MTU5MDA1OTYyOSwiY2lkIjoiMG9hbHV3dmljdkFpQ2s2WmEwaDciLCJ1aWQiOiIwMHVxZTlhazNyYTdoRUZlQTBoNyIsInNjcCI6WyJlbWFpbCIsIm9wZW5pZCIsInByb2ZpbGUiXSwic3ViIjoiSWduYWNpb19FbG9yZHV5QGV4dGVybmFsLm1ja2luc2V5LmNvbSJ9.RnYRuDcYA4VCX-WXM8lrm_6_5dwW0uTh_luC-aGw-Ukm0jqTxxEnPGjyBt8911oRwN4STc0UyOPocKBiqqraUoMrrntUiCx84teiyxiR6_4Pn-fsTd7OgZouVkkOh4qNDRERPflQyqj1Ah8bT8r3y5n_vTG9yzHe199DLfSM6Nv5mWfmZnyxidrl7yBaqeNVORAGMjX-Ws8SvkpekYbO07JCSxkE0sTPYcZqwgqLzz94CHBDOAX0xM9cYBY8GnXH_dW0Lot-BzjxLgK1Lnc7ddzadV7w-1M2kP_xMcUMqVMWcVHBsuNsOufNgHPbrTxKo3wX30nkf46giNNVTR7Cyg'''
+    ]
+
+[[rules]]
+description = "Private Key File"
+regex = '''-----BEGIN[ A-Z]* PRIVATE KEY[ A-Z]*-----'''
+tags = ["key", "PEM"]
+
+[[rules]]
+description = "Putty Private Key File"
+regex = '''PuTTY-User-Key-File-2'''
+tags = ["key", "PuTTY"]
+
+[allowlist]
+  description = "Allowlisted files"
+  files = ['''^\.?gitleaks.toml$''',
+  '''(.*?)(png|jpg|gif|svg|doc|docx|pdf|bin|xls|pyc|zip)$''',
+  '''(go.mod|go.sum)$''']
+
+#commits = [
+#  "whitelisted-commit1",
+#  "whitelisted-commit2",
+#]
