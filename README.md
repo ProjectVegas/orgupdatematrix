@@ -4,7 +4,7 @@ This gem revceives data from a Capistrano run and updates a specified YAML file 
 
 Depends on the "octokit" gem [https://github.com/octokit/octokit.rb](https://github.com/octokit/octokit.rb)
 
-# Setup
+## Setup
 
 It is a firm requirement that [gitleaks](https://github.com/zricethezav/gitleaks) is run as a `pre-commit` hook. To install the hook run:
 
